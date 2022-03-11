@@ -1,0 +1,7 @@
+env: sb
+full_env: sandbox
+domain: "rancher-sb.sun-asterisk.vn"
+
+# Roles/mysql-server
+APP_DB_NAME: imageresolutionapp_dev
+APP_DB_USER: imageresolutionappadmindev
