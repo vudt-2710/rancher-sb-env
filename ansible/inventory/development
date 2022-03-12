@@ -1,5 +1,5 @@
 [tag_Role_mgmt]
-amgmtpi ansible_host=192.168.69.120 ansible_user=sun ansible_port=22 ansible_ssh_pass=a
+mgmt ansible_host=192.168.69.120 ansible_user=sun ansible_port=22 ansible_ssh_pass=a
 
 [tag_Role_ext_lb]
 ext_lb ansible_host=192.168.69.121 ansible_user=sun ansible_port=22 ansible_ssh_pass=a

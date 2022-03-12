@@ -10,11 +10,6 @@ deploy_user: deploy
 # General path
 auth_log_path: /var/log/auth.log
 sys_log_path: /var/log/syslog
-# ssm_agent_log_path: /var/log/amazon/ssm/amazon-ssm-agent.log
-# ssm_error_log_path: /var/log/amazon/ssm/errors.log
-# codedeploy_agent_log_path: /var/log/aws/codedeploy-agent/codedeploy-agent.log
-# codedeploy_update_log_path: /tmp/codedeploy-agent.update.log
-# codedeploy_deployment_log_path: /opt/codedeploy-agent/deployment-root/deployment-logs/codedeploy-agent-deployments.log
 
 #Roles/nginx
 root_dir: "{{ app_dir }}/current/public"
