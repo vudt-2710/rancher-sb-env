@@ -1,0 +1,62 @@
+---
+- name: Download do binario RKE 
+  become: true
+  get_url:
+    url: "{{ rke_binary_url }}"
+    dest: /usr/local/bin/rke
+    mode: "+rx"
+  run_once: true
+  delegate_to: "{{ rke_node }}"
+
+- name: Definindo diretorio para RKE
+  become: true
+  file:
+    path: "{{ rke_config_dir }}"
+    state: directory
+    owner: "{{ rke_user }}"
+    group: "{{ rke_user }}"
+    mode: "0755"
+  run_once: true
+  delegate_to: "{{ rke_node }}"
+
+- name: Set labels e taints para node dedicado para Rancher
+  set_fact:
+    rke_labels:
+      dedicated: rancher-server
+    rke_taints:
+      - key: dedicated
+        value: rancher-server
+        effect: NoSchedule
+  run_once: true
+  delegate_to: "{{ item }}"
+  delegate_facts: true
+  when: hostvars[item]['rke_rancher_dedicated_node'] is defined and hostvars[item]['rke_rancher_dedicated_node']
+  loop: "{{ groups['nodes'] }}"
+
+- name: Set labels e taints para nodes dedicado para ingress
+  set_fact:
+    rke_labels:
+      dedicated: ingress
+    rke_taints:
+      - key: dedicated
+        value: ingress
+        effect: NoSchedule
+  run_once: true
+  delegate_to: "{{ item }}"
+  delegate_facts: true
+  when: hostvars[item]['rke_ingress_dedicated_node'] is defined and hostvars[item]['rke_ingress_dedicated_node']
+  loop: "{{ groups['nodes'] }}"
+
+- name: Cria o arquivo de configuracao RKE do cluster 
+  become: true
+  template:
+    src: cluster.yml.j2
+    dest: "{{ rke_config_dir }}/cluster.yml"
+    owner: "{{ rke_user }}"
+    group: "{{ rke_user }}"
+    mode: "0644"
+  register: rke_cluster_config
+  run_once: true
+  delegate_to: "{{ rke_node }}"
+  tags: rke_deploy
+
